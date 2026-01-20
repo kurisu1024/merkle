@@ -1,6 +1,7 @@
 package merkle_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/kurisu1024/merkle"
@@ -405,7 +406,8 @@ func BenchmarkNewTree(b *testing.B) {
 			data[i] = string(rune('a' + i%26))
 		}
 
-		b.Run(string(rune(size)), func(b *testing.B) {
+		b.ResetTimer()
+		b.Run(fmt.Sprintf("size-%d", size), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				merkle.NewTree(data)
 			}
@@ -424,7 +426,8 @@ func BenchmarkGetProof(b *testing.B) {
 
 		tree, _ := merkle.NewTree(data)
 
-		b.Run(string(rune(size)), func(b *testing.B) {
+		b.ResetTimer()
+		b.Run(fmt.Sprintf("size-%d", size), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				tree.GetProof(i % size)
 			}
